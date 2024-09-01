@@ -23,12 +23,12 @@ class MyApp extends StatelessWidget {
 }*/
 
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:we_session1/posts_application/screens/home_screen.dart';
-import 'package:we_session1/posts_application/cubit/posts_cubit.dart';
-import 'package:we_session1/posts_application/dio_helper/dio_helper.dart';
+import 'package:we_session1/news_application/cubit/news_cubit.dart';
+import 'package:we_session1/news_application/screen/layout/main_layout.dart';
+
+import 'news_application/shared/network/dio_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,10 +43,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PostsCubit()..getAllPosts(),
+      create: (context) => NewsCubit(),
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: HomeScreen(),
+        home: MainLayout(),
       ),
     );
   }
