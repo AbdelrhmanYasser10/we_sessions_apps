@@ -43,7 +43,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NewsCubit(),
+      create: (context) =>
+      NewsCubit()
+        ..getSliderNews()
+        ..getTopHeadlines(),
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: MainLayout(),

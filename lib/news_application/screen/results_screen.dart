@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_session1/news_application/cubit/news_cubit.dart';
+import 'package:we_session1/news_application/shared/widgets/news_card.dart';
 
 class ResultsScreen extends StatelessWidget {
   final String title;
@@ -38,43 +39,10 @@ class ResultsScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ListView.separated(
                   itemBuilder: (context, index) {
-                    return Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            Text(
-                              cubit.results.articles![index].title ?? "There's no title",
-                              style: const TextStyle(
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Text(
-                              cubit.results.articles![index].description ?? "There's no description",
-                              style: const TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Image.network(
-                                cubit.results.articles![index].urlToImage ?? "https://media.istockphoto.com/id/1369150014/vector/breaking-news-with-world-map-background-vector.jpg?s=612x612&w=0&k=20&c=9pR2-nDBhb7cOvvZU_VdgkMmPJXrBQ4rB1AkTXxRIKM=",
-                            )
-                          ],
-                        ),
-                      ),
+                    return NewsCard(
+                        title: cubit.results.articles![index].title,
+                        imageLink: cubit.results.articles![index].urlToImage,
+                        description: cubit.results.articles![index].description,
                     );
                   },
                   separatorBuilder: (context, index) {

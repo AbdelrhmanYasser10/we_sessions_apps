@@ -15,6 +15,8 @@ class NewsCubit extends Cubit<NewsState> {
   static NewsCubit get(context)=>BlocProvider.of(context);
   
   late NewsModel results;
+   NewsModel? sliderNews;
+   NewsModel? topHeadlines;
   
   void getResults({required String categoryName})async{
     emit(GetResultsLoading());
@@ -22,10 +24,11 @@ class NewsCubit extends Cubit<NewsState> {
       Response response = await DioHelper.getRequest(
           endPoint: "top-headlines",
           queryParameters: {
-            "country": "eg",
+            "country": "us",
             "category": categoryName,
             "apiKey": APIKEY,
           });
+      print(response.data);
       results = NewsModel.fromJson(response.data);
       emit(GetResultsSuccess());
     }catch(error){
@@ -33,5 +36,39 @@ class NewsCubit extends Cubit<NewsState> {
       emit(GetResultsError());
     }
   }
-  
+
+
+  void getSliderNews()async{
+    emit(GetSliderNewsLoading());
+    try {
+      Response r = await DioHelper.getRequest(
+        endPoint: "top-headlines",
+        queryParameters: {
+          "country": "us",
+          "apiKey": APIKEY,
+        },
+      );
+      sliderNews = NewsModel.fromJson(r.data);
+      emit(GetSliderNewsSuccess());
+    }catch(error){
+      emit(GetSliderNewsError());
+    }
+  }
+
+  void getTopHeadlines()async{
+    emit(GetBreakingNewsLoading());
+    try {
+      Response r = await DioHelper.getRequest(
+          endPoint: "top-headlines",
+          queryParameters: {
+            "apiKey": APIKEY,
+            "country": "us",
+          }
+      );
+      topHeadlines = NewsModel.fromJson(r.data);
+      emit(GetBreakingNewsSuccess());
+    }catch(error){
+      emit(GetBreakingNewsError());
+    }
+  }
 }
