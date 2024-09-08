@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:we_session1/e-commerce_application/screens/registration_screen/register_screen.dart';
+import 'package:we_session1/e-commerce_application/screens/login_screen/login_screen.dart';
 import 'package:we_session1/e-commerce_application/shared/cubit/auth_cubit/auth_cubit.dart';
-import 'package:we_session1/e-commerce_application/shared/network/local/cache_helper/cache_helper.dart';
 
+import '../../shared/network/local/cache_helper/cache_helper.dart';
 import '../../shared/widgets/my_text_form_field.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,10 +30,10 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height / 6,
+                height: MediaQuery.of(context).size.height / 20,
               ),
               Text(
-                "LOGIN",
+                "REGISTER",
                 style: GoogleFonts.manrope(
                   textStyle: TextStyle(
                     fontSize: 48.0,
@@ -40,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Text(
-                "Login to buy our special products",
+                "Join us to buy our special products",
                 style: GoogleFonts.manrope(
                   textStyle: TextStyle(
                     fontSize: 15.0,
@@ -55,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _emailController,
                 title: "E-mail",
                 labelText: "E-mail",
-                prefixIcon: const Icon(
+                prefixIcon: Icon(
                   Icons.email_outlined,
                 ),
               ),
@@ -66,27 +68,49 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _passwordController,
                 title: "Password",
                 labelText: "Password",
-                prefixIcon: const Icon(
+                prefixIcon: Icon(
                   Icons.lock_outline,
                 ),
                 isPassword: true,
               ),
-              const SizedBox(
+              SizedBox(
+                height: 20.0,
+              ),
+              MyTextFormField(
+                controller: _usernameController,
+                title: "Username",
+                labelText: "Username",
+                prefixIcon: Icon(
+                  Icons.person_2_outlined,
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              MyTextFormField(
+                controller: _phoneNumberController,
+                title: "Phone number",
+                labelText: "Phone number",
+                prefixIcon: Icon(
+                  Icons.phone_outlined,
+                ),
+              ),
+              SizedBox(
                 height: 50.0,
               ),
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) async{
-                  if(state is LoginWithError){
+                  if(state is RegisterWithError){
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         backgroundColor: Colors.red,
-                          content: Text(
-                            state.message,
-                          ),
+                        content: Text(
+                          state.message,
+                        ),
                       ),
                     );
                   }
-                  if(state is LoginSuccessfully){
+                  if(state is RegisterSuccessfully){
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         backgroundColor: Colors.green,
@@ -100,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 builder: (context, state) {
                   var cubit = AuthCubit.get(context);
-                  if(state is LoginLoading){
+                  if (state is RegisterLoading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
@@ -114,13 +138,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     onPressed: () {
-                      cubit.login(
-                          email: _emailController.text,
+                      cubit.register(
+                        email: _emailController.text,
                           password: _passwordController.text,
+                          username: _usernameController.text,
+                          phoneNumber: _phoneNumberController.text,
                       );
                     },
                     child: const Text(
-                      "Login",
+                      "Register",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18.0,
@@ -132,18 +158,18 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Don't have an account?"),
+                  const Text("Already have an account?"),
                   TextButton(
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const RegisterScreen(),
+                          builder: (_) => const LoginScreen(),
                         ),
                       );
                     },
                     child: const Text(
-                      "Register",
+                      "Login",
                     ),
                   ),
                 ],

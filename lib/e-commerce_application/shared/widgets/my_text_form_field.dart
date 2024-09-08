@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyTextFormField extends StatefulWidget {
+  final TextEditingController controller;
   final String title;
   final String labelText;
   final Icon prefixIcon;
@@ -10,6 +11,7 @@ class MyTextFormField extends StatefulWidget {
   const MyTextFormField({
     Key? key,
     required this.title,
+    required this.controller,
     required this.labelText,
     required this.prefixIcon,
     this.isPassword = false,
@@ -24,7 +26,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
   @override
   void initState() {
     super.initState();
-    isObsecure = widget.isPassword;
+    isObsecure = widget.isPassword; //true
   }
 
   @override
@@ -45,6 +47,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
           height: 10.0,
         ),
         TextFormField(
+          controller: widget.controller,
           obscureText: isObsecure,
           decoration: InputDecoration(
               border: const OutlineInputBorder(
