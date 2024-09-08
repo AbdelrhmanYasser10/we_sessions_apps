@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:we_session1/e-commerce_application/screens/login_screen/login_screen.dart';
+import 'package:we_session1/e-commerce_application/screens/main_layout/main_layout.dart';
 import 'package:we_session1/e-commerce_application/shared/cubit/auth_cubit/auth_cubit.dart';
 
 import '../../shared/network/local/cache_helper/cache_helper.dart';
@@ -120,6 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     );
                     await CacheHelper.storeInCache("token", state.model.data!.token!);
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>MainLayout()));
                   }
                 },
                 builder: (context, state) {

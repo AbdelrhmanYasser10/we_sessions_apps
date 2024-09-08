@@ -85,8 +85,8 @@ class Banners {
 
 class Products {
   int? id;
-  double? price;
-  double? oldPrice;
+  num? price;
+  num? oldPrice;
   int? discount;
   String? image;
   String? name;
