@@ -8,6 +8,8 @@ import 'package:we_session1/e-commerce_application/shared/network/local/cache_he
 import 'package:we_session1/e-commerce_application/shared/network/remote/dio_helper/dio_helper.dart';
 import 'package:we_session1/e-commerce_application/shared/network/remote/endpoints/endpoints.dart';
 
+import '../../../model/user_model.dart';
+
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
@@ -15,7 +17,7 @@ class AppCubit extends Cubit<AppState> {
   static AppCubit get(context)=>BlocProvider.of(context);
   HomeModel? homeModel;
   CategoriesModel? categoriesModel;
-
+  UserModel? user;
   void getHomeData()async{
     emit(GetHomeDataLoading());
     Response response = await DioHelper.getRequest(
@@ -31,6 +33,34 @@ class AppCubit extends Cubit<AppState> {
     }
   }
 
-  void getCategoriesData()async{}
+  void getCategoriesData()async{
+    emit(GetCategoriesDataLoading());
+    Response response = await DioHelper.getRequest(
+        endPoint: "categories",
+    );
+    categoriesModel = CategoriesModel.fromJson(response.data);
+    if(categoriesModel!.status!){
+      emit(GetCategoriesDataSuccess());
+    }
+    else{
+      emit(GetCategoriesDataError());
+    }
+  }
+
+  void getUserData()async{
+    emit(GetUserDataLoading());
+    Response response = await DioHelper.getRequest(
+      endPoint: "profile",
+      token: CacheHelper.getStringFromCache("token") ??""
+    );
+    user = UserModel.fromJson(response.data);
+    if(user!.status!){
+      emit(GetUserDataSuccessfully());
+    }
+    else{
+      emit(GetUserDataError());
+    }
+
+  }
 
 }

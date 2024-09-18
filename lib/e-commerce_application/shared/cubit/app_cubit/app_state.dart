@@ -13,3 +13,8 @@ class GetHomeDataError extends AppState{}
 class GetCategoriesDataLoading extends AppState{}
 class GetCategoriesDataSuccess extends AppState{}
 class GetCategoriesDataError extends AppState{}
+
+
+class GetUserDataLoading extends AppState{}
+class GetUserDataSuccessfully extends AppState{}
+class GetUserDataError extends AppState{}

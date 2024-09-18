@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:we_session1/e-commerce_application/screens/product_details_screen/product_details_screen.dart';
 import 'package:we_session1/e-commerce_application/shared/cubit/app_cubit/app_cubit.dart';
 
 import '../model/home_model.dart';
@@ -97,95 +98,105 @@ class _HomeScreenState extends State<HomeScreen> {
                             childAspectRatio: 10/15
                           ),
                       itemBuilder: (context, index) {
-                        return Card(
-                          color: Colors.white,
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Stack(
-                                  children: [
-                                    Image.network(
-                                      cubit.homeModel!.data!.products![index]
-                                          .image!,
-                                    ),
-                                    cubit.homeModel!.data!.products![index].discount! != 0 ? Align(
-                                      alignment: Alignment.topRight,
-                                      child: Container(
-                                        width: 40,
-                                        height: 20,
-                                        decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius: BorderRadius.circular(15.0),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "${cubit.homeModel!.data!.products![index].discount}%",
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 8,
-                                              fontWeight: FontWeight.bold,
+                        return GestureDetector(
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_){
+                              return ProductDetailsScreen(product: cubit.homeModel!.data!.products![index]) ;
+                              }),
+                            );
+                          },
+                          child: Card(
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Stack(
+                                    children: [
+                                      Image.network(
+                                        cubit.homeModel!.data!.products![index]
+                                            .image!,
+                                      ),
+                                      cubit.homeModel!.data!.products![index].discount! != 0 ? Align(
+                                        alignment: Alignment.topRight,
+                                        child: Container(
+                                          width: 40,
+                                          height: 20,
+                                          decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius: BorderRadius.circular(15.0),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              "${cubit.homeModel!.data!.products![index].discount}%",
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 8,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ): const SizedBox(),
+                                      ): const SizedBox(),
 
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10.0),
-                                child: Text(
-                                  cubit.homeModel!.data!.products![index].name!,
-                                  style: const TextStyle(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.bold,
+                                    ],
                                   ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10.0,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  child: Text(
+                                    cubit.homeModel!.data!.products![index].name!,
+                                    style: const TextStyle(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          cubit.homeModel!.data!.products![index]
-                                              .price!
-                                              .toString(),
-                                        ),
-                                        const SizedBox(
-                                          width: 5.0,
-                                        ),
-                                        cubit.homeModel!.data!.products![index].discount! != 0 ? Text(
-                                          cubit.homeModel!.data!.products![index]
-                                              .oldPrice!
-                                              .toString(),
-                                          style:const  TextStyle(
-                                            fontSize: 8,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.red,
-                                            decoration: TextDecoration.lineThrough,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            cubit.homeModel!.data!.products![index]
+                                                .price!
+                                                .toString(),
                                           ),
-                                        ):const SizedBox(),
-                                      ],
-                                    ),
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(
-                                        Icons.favorite_outline,
+                                          const SizedBox(
+                                            width: 5.0,
+                                          ),
+                                          cubit.homeModel!.data!.products![index].discount! != 0 ? Text(
+                                            cubit.homeModel!.data!.products![index]
+                                                .oldPrice!
+                                                .toString(),
+                                            style:const  TextStyle(
+                                              fontSize: 8,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.red,
+                                              decoration: TextDecoration.lineThrough,
+                                            ),
+                                          ):const SizedBox(),
+                                        ],
                                       ),
-                                    ),
-                                  ],
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Icons.favorite_outline,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         );
                       },

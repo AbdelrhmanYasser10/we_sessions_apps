@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../home_screen.dart';
+import '../profile_screen/profile_screen.dart';
 
 
 class MainLayout extends StatefulWidget {
@@ -17,7 +18,7 @@ class _MainLayoutState extends State<MainLayout> {
       Scaffold(),
       Scaffold(),
       Scaffold(),
-      Scaffold(),
+      ProfileScreen(),
     ];
   @override
   Widget build(BuildContext context) {

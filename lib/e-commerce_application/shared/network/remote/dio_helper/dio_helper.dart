@@ -23,6 +23,7 @@ abstract class DioHelper{
   })async{
     _dio!.options.headers = {
       "Authorization": token,
+      'lang':'en',
     };
     return await _dio!.get(endPoint,queryParameters: queryParameters);
   }
@@ -34,6 +35,7 @@ abstract class DioHelper{
   })async{
     _dio!.options.headers = {
       "Authorization": token,
+      'lang':'en'
     };
     return await _dio!.post(endPoint,queryParameters: queryParameters,data: data);
   }
