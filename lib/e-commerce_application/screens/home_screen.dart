@@ -26,7 +26,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<AppCubit, AppState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if(state is ChangeProductFavouriteError){
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                backgroundColor: Colors.red,
+                  content: Text(
+                "This product cannot be added in favourite now",
+              ),),
+            );
+          }
+        },
         builder: (context, state) {
           var cubit = AppCubit.get(context);
           if (state is GetHomeDataLoading) {
@@ -187,9 +197,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ],
                                       ),
                                       IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(
-                                          Icons.favorite_outline,
+                                        onPressed: () {
+                                          cubit.changeProductFavourite(productId: cubit.homeModel!.data!.products![index].id!);
+                                        },
+                                        icon:  Icon(
+                                          cubit.favMap[cubit.homeModel!.data!.products![index].id]!?
+                                          Icons.favorite_outlined:Icons.favorite_outline,
+                                          color: cubit.favMap[cubit.homeModel!.data!.products![index].id]!? Colors.red:Colors.grey,
                                         ),
                                       ),
                                     ],

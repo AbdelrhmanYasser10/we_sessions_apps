@@ -18,3 +18,11 @@ class GetCategoriesDataError extends AppState{}
 class GetUserDataLoading extends AppState{}
 class GetUserDataSuccessfully extends AppState{}
 class GetUserDataError extends AppState{}
+
+
+class ChangeProductFavouriteSuccessfully extends AppState{}
+class ChangeProductFavouriteError extends AppState{}
+
+class GetFavouritesLoading extends AppState{}
+class GetFavouritesSuccess extends AppState{}
+class GetFavouritesError extends AppState{}

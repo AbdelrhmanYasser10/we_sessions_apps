@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:we_session1/e-commerce_application/model/cateogires_model.dart';
+import 'package:we_session1/e-commerce_application/model/favourite_model.dart';
 import 'package:we_session1/e-commerce_application/model/home_model.dart';
 import 'package:we_session1/e-commerce_application/shared/network/local/cache_helper/cache_helper.dart';
 import 'package:we_session1/e-commerce_application/shared/network/remote/dio_helper/dio_helper.dart';
@@ -18,6 +19,9 @@ class AppCubit extends Cubit<AppState> {
   HomeModel? homeModel;
   CategoriesModel? categoriesModel;
   UserModel? user;
+  FavouriteModel? favouriteModel;
+
+  Map<int,bool> favMap = {};
   void getHomeData()async{
     emit(GetHomeDataLoading());
     Response response = await DioHelper.getRequest(
@@ -26,6 +30,11 @@ class AppCubit extends Cubit<AppState> {
     );
     homeModel = HomeModel.fromJson(response.data);
     if(homeModel!.status!){
+      for(var element in homeModel!.data!.products!){
+        favMap.addAll({
+          element.id! : element.inFavorites!,
+        });
+      }
       emit(GetHomeDataSuccess());
     }
     else{
@@ -61,6 +70,50 @@ class AppCubit extends Cubit<AppState> {
       emit(GetUserDataError());
     }
 
+  }
+
+  void changeProductFavourite({required int productId}) async
+  {
+    favMap[productId] = !favMap[productId]!;
+    emit(ChangeProductFavouriteSuccessfully());
+    Response r = await DioHelper.postRequest(
+        endPoint: "favorites",
+        token: CacheHelper.getStringFromCache("token"),
+      data: {
+          "product_id":productId,
+      }
+    );
+    print(CacheHelper.getStringFromCache("token"));
+    print(r.data);
+    if(r.data["status"]){
+      getAllFavourites();
+      emit(ChangeProductFavouriteSuccessfully());
+    }
+    else{
+      favMap[productId] = !favMap[productId]!;
+      emit(ChangeProductFavouriteError());
+    }
+  }
+
+  void getAllFavourites()async{
+    emit(GetFavouritesLoading());
+    Response response = await DioHelper.
+    getRequest(
+        endPoint: "favorites",
+        token: CacheHelper.getStringFromCache("token"),
+    );
+    try {
+      favouriteModel = FavouriteModel.fromJson(response.data);
+      if (favouriteModel!.status!) {
+        emit(GetFavouritesSuccess());
+      }
+      else {
+        emit(GetFavouritesError());
+      }
+    }catch(error){
+      print(error);
+      emit(GetFavouritesError());
+    }
   }
 
 }

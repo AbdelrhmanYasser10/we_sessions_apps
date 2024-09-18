@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../favourite_screen/favourite_screen.dart';
 import '../home_screen.dart';
 import '../profile_screen/profile_screen.dart';
 
@@ -17,7 +18,7 @@ class _MainLayoutState extends State<MainLayout> {
       HomeScreen(),
       Scaffold(),
       Scaffold(),
-      Scaffold(),
+      FavouriteScreen(),
       ProfileScreen(),
     ];
   @override
