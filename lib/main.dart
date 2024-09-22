@@ -1,38 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:we_session1/e-commerce_application/screens/main_layout/main_layout.dart';
-import 'package:we_session1/e-commerce_application/shared/cubit/app_cubit/app_cubit.dart';
-import 'package:we_session1/e-commerce_application/shared/network/local/cache_helper/cache_helper.dart';
-import 'package:we_session1/e-commerce_application/shared/network/remote/dio_helper/dio_helper.dart';
+import 'package:we_session1/chat_application/shared/cubits/app_cubit.dart';
+import 'chat_application/screens/register_screen.dart';
+import 'firebase_options.dart';
 
-import 'e-commerce_application/screens/login_screen/login_screen.dart';
-import 'e-commerce_application/shared/cubit/auth_cubit/auth_cubit.dart';
-
-
-void main()async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await CacheHelper.initializeCache();
-  await DioHelper.initializeDio();
-  String? token = CacheHelper.getStringFromCache("token");
-  runApp( MyApp(
-    token: token,
-  ));
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final String? token;
-  const MyApp({super.key, required this.token});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers:[
-        BlocProvider(create: (_)=>AppCubit()),
-        BlocProvider(create: (_)=>AuthCubit()),
-      ],
-      child: MaterialApp(
+    return BlocProvider(
+      create: (context) => AppCubit(),
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: token == null ? const LoginScreen() : const MainLayout(),
+        home: RegisterScreen(),
       ),
     );
   }
